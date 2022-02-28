@@ -56,11 +56,13 @@ https://github.com/JaehunSim/devocean-django/tree/8b628401b20c760bd75fa718a7fed8
 4. settings/urls.py
    1. 어떤 url 경로로 접근할지 명시해주는 부분입니다. CompanyList, CompanyDetail 연결을 해줍니다.
 5. settings/settings.py
-   1. DB를 postgresql로 바꿔야 합니다.
+   1. DB를 postgresql로 바꿔야 합니다. (기본DB인 sqlite3는 heroku에서 증발해버립니다..)
+      1. db_database_url 설정도 해줍니다.
+   2. css를 제대로 적용하기위해 whitenoise 미들웨어를 추가합니다.
 
 
 
-Model을 만들었으면 DB에 반영을 해야합니다. Heroku에서 아래 명령어를 입력하면 됩니다.
+Model을 만들었으면 DB에 연동을 해야합니다. Heroku에서 아래 명령어를 입력하면 됩니다.
 
 1. Heroku console을 열고 
 
@@ -70,6 +72,58 @@ Model을 만들었으면 DB에 반영을 해야합니다. Heroku에서 아래 �
 
 4. `python manage.py migrate`
 
+https://github.com/JaehunSim/devocean-django/tree/0aeb59f726bf02e3578120852cf4e7b4c318de6e
+
+
+
+## 탐험해보기
+
+https://devoceansk.herokuapp.com/api/company/
+
+끝났습니다~
+
+여기서 REST API 실험을 해볼 수 있습니다!
+
+Heroku가 아니라면 `python manage.py runserver` 로 확인할 수 있습니다. 
+
+이럴경우 기본 sqlite3 DB를 쓰면 되고, `127.0.0.1:8000` 으로 접근해보세요.
+
+
+
+### 데이터 넣기
+
+HTTP API를 이용해 데이터를 넣을 수 있습니다.
+
+python requests 를 이용해 넣어보겠습니다.
+
+```python
+import requests
+
+url = r"https://devoceansk.herokuapp.com/api/company/"
+data = {"name": "SK하이닉스",
+        "field": "반도체",
+        "address": "경기도 이천시 부발읍 경충대로 2091",
+        "latitude": 37.2497159,
+        "longitude": 127.4825281,
+        "total_employees": 22254,
+        "revenue": 429978,
+        "operating_income": 124103,
+        "net_income": 96162}
+requests.post(url, data=data)
+```
+
+
+
+## 결과
+
+https://devoceansk.herokuapp.com/api/company/
+
+https://devoceansk.herokuapp.com/api/company/1
+
+
+
+
+
 
 
 ## requirements 설명
@@ -78,5 +132,6 @@ Model을 만들었으면 DB에 반영을 해야합니다. Heroku에서 아래 �
 2. dj-database-url, psycopg2
    1. DB 라이브러리입니다. (postgresql)
 3. gunicorn, whitenoise
-   1. 서버 관련 라이브러리입니다. 
+   1. gunicorn: 서버 관련 라이브러리입니다. 
+   2. whitenoise: static file 관련 라이브러러입니다.
 
