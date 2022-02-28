@@ -1,5 +1,7 @@
 import os
 
+import dj_database_url
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1p--n3lq_nr93etf%d63dep(a*!x9&z5hl@%!z^80&e-t))i2='
 DEBUG = True
@@ -81,3 +83,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
